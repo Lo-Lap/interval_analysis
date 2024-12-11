@@ -158,33 +158,93 @@ def func_med_k_t(t):
     return np.mean(coefficient_Jakkard(med_K(X * t), med_K(Y)))
 
 
+def draw_func(f, a, b, parametr: str, func=""):
+    X_linsp = np.linspace(a, b, 100)
+    y = [f(x) for x in X_linsp]
+    y_max = max(y)
+    y_min = min(y)
+    ind_max = y.index(y_max)
+    x_max = X_linsp[ind_max]
+
+    plt.plot(X_linsp, y, color='b')
+    plt.xlabel(f"{parametr}")
+    plt.ylabel(f"Ji({parametr}, {func}(X), {func}(Y))")
+    plt.axvline(x=x_max, linestyle='--', color='r')
+    plt.text(x_max+0.15, (y_max + y_min)/2, f"x = {round(x_max, 4)}", color='red',
+             ha='center')  # Positioned near the line
+
+    plt.title("Jaccard Index")
+    plt.savefig(f"Jaccadrd-{parametr}-{func}")
+    plt.show()
+
+
+def draw_func_all(i, f, a, b, parametr: str, func=""):
+    colors = ["#EF476F", "#F78C6B", "#FFD166", "#83D483", "#06D6A0", "#0CB0A9", "#118AB2", "#073B4C"]
+    X_linsp = np.linspace(a, b, 100)
+    y = np.array([f(x) for x in X_linsp])
+    plt.plot(X_linsp, y, color=colors[i], label=f"Ji({parametr}, {func}(X), {func}(Y))", alpha=0.7)
+
+    # plt.xlabel(f"{parametr}")
+    # plt.ylabel(f"Ji({parametr}, {func}(X), {func}(Y))")
+    # plt.title("Jaccard Index")
+    # plt.show()
+    # plt.savefig(f"Jaccadrd-{parametr}-{func}")
+
+
 if __name__ == "__main__":
     X, Y = GetData()
 
-    # Функционал = Ji(const,X,Y)
-    a_f = argmaxF(func_a, 0, 1, 1e-3)
-    print(a_f, func_a(a_f))
+    # # Функционал = Ji(const, X, Y)
+    draw_func(func_a, 0, 1, "a")
+    # a_f = argmaxF(func_a, 0, 1, 1e-3)
+    # print(a_f, func_a(a_f))
+    draw_func(func_t, -4, 0, "t")
+    # t_f = argmaxF(func_t, -4, 0, 1e-3)
+    # print(t_f, func_t(t_f))
 
-    t_f = argmaxF(func_t, -4, 0, 1e-3)
-    print(t_f, func_t(t_f))
+    # # Функционал = Ji(const,mode(X), mode(Y))
+    # draw_func(func_mode_a, 0, 1)
+    # # a_f_mode = argmaxF(func_mode_a, 0, 1, 1e-3)
+    # # print(a_f_mode, func_mode_a(a_f_mode))
+    # draw_func(func_mode_t, -4, 0)
+    # t_f_mode = argmaxF(func_mode_t, -4, 0, 1e-3)
+    # print(t_f_mode, func_mode_t(t_f_mode))
+
+    # # Функционал = Ji(const,med_K(X), med_K(Y))
+    draw_func(func_med_k_a, 0, 1, "a", "med_K")
+    # a_f_med_k = argmaxF(func_med_k_a, 0, 1, 1e-3)
+    # print(a_f_med_k, func_med_k_a(a_f_med_k))
+    draw_func(func_med_k_t, -4, 0, "t", "med_K")
+    # t_f_med_k = argmaxF(func_med_k_t, -4, 0, 1e-3)
+    # print(t_f_med_k, func_med_k_t(t_f_med_k))
+
+    # # Функционал = Ji(const,med_р(X), med_р(Y))
+    draw_func(func_med_p_a, 0, 1, "a", "med_p")
+    # a_f_med_p = argmaxF(func_med_p_a, 0, 1, 1e-3)
+    # print(a_f_med_p, func_med_p_a(a_f_med_p))
+    draw_func(func_med_p_t, -4, 0, "t", "med_p")
+    # t_f_med_p = argmaxF(func_med_p_t, -4, 0, 1e-3)
+    # print(t_f_med_p, func_med_p_t(t_f_med_p))
+
+    # funcs = [func_a, func_t, func_a_med_k, func_t_med_k, func_a_med_p, func_t_med_p]
+    # funcs_str = ["", "", "med_k", "med_k", "med_p", "med_p"]
+    # bounds = [[0, 1], [-4, 0], [0, 1], [-4, 0], [0, 1], [-4, 0]]
+    # params = ["a", "t", "a", "t", "a", "t"]
     #
-    # Функционал = Ji(const,mode(X), mode(Y))
-    a_f_mode = argmaxF(func_mode_a, 0, 1, 1e-3)
-    print(a_f_mode, func_mode_a(a_f_mode))
-
-    t_f_mode = argmaxF(func_mode_t, -4, 0, 1e-3)
-    print(t_f_mode, func_mode_t(t_f_mode))
-
-    # Функционал = Ji(const,med_K(X), med_K(Y))
-    a_f_med_k = argmaxF(func_med_k_a, 0, 1, 1e-3)
-    print(a_f_med_k, func_med_k_a(a_f_med_k))
-
-    t_f_med_k = argmaxF(func_med_k_t, -4, 0, 1e-3)
-    print(t_f_med_k, func_med_k_t(t_f_med_k))
-
-    # Функционал = Ji(const,mode(X), mode(Y))
-    a_f_med_p = argmaxF(func_med_p_a, 0, 1, 1e-3)
-    print(a_f_med_p, func_med_p_a(a_f_med_p))
-
-    t_f_med_p = argmaxF(func_med_p_t, -4, 0, 1e-3)
-    print(t_f_med_p, func_med_p_t(t_f_med_p))
+    # for i in range(1, len(funcs)+1, 2):
+    #     draw_func_all(i, funcs[i], bounds[i][0], bounds[i][1], params[i], funcs_str[i])
+    # plt.xlabel(f"const")
+    # plt.ylabel(f"Ji(const, func(X), func(Y))")
+    # plt.title("Jaccard Index")
+    # plt.legend()
+    # plt.savefig(f"Jaccadrd-all-in-one-T")
+    # plt.show()
+    #
+    # for i in range(0, len(funcs), 2):
+    #     draw_func_all(i, funcs[i], bounds[i][0], bounds[i][1], params[i], funcs_str[i])
+    # plt.xlabel(f"const")
+    # plt.ylabel(f"Ji(const, func(X), func(Y))")
+    # plt.title("Jaccard Index")
+    # plt.legend()
+    # plt.savefig(f"Jaccadrd-all-in-one-A")
+    # plt.show()

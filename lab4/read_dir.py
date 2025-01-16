@@ -103,7 +103,7 @@ class rawData:
         bin_file = self.get_bin_by_lvl(lvl, last)
         if bin_file:
             plt.hist(np.array(bin_file.frames[frame])[:, channel],
-                     edgecolor="#074c3a",
+                     edgecolor="cornflowerblue",
                      bins=1024,
                      density=True)
             plt.title(f"lvl: {lvl}, frame: {frame}, channel: {channel + 1}")
@@ -115,7 +115,7 @@ class rawData:
         bin_file = self.get_bin_by_lvl(lvl, last)
         if bin_file:
             plt.plot(np.array(bin_file.frames[frame])[:, channel],
-                     color="#074c3a")
+                     color="royalblue")
             plt.title(f"lvl: {lvl}, frame: {frame}, channel: {channel+1}")
             plt.show()
         else:
@@ -127,7 +127,7 @@ class rawData:
             for channel in range(0, 8):
                 plt.subplot(2, 4, channel + 1)
                 plt.hist(np.array(bin_file.frames[frame])[:, channel],
-                         edgecolor="#074c3a",
+                         edgecolor="cornflowerblue",
                          bins=1024,
                          density=True)
                 plt.title(f"{lvl, frame, channel + 1}")
@@ -142,13 +142,13 @@ class rawData:
                 for channel in range(0, 8):
                     plt.subplot(2, 4, channel + 1)
                     plt.plot(np.array(bin_file.frames[frame])[:, channel],
-                             color="#074c3a")
+                             color="royalblue")
                     plt.title(f"{lvl, frame, channel + 1}")
                 plt.show()
             else:
-                colors = ["#010605", "#031d16", "#053528", "#074c3a",
-                          "#09634c", "#0b7b5e", "#0d926f", "#0fa981"]
-
+                colors = ["cyan", "deepskyblue", "teal", "darkslateblue",
+                          "midnightblue", "indigo", "slategray", "turquoise"]
+                # colors = ["#EF476F", "#F78C6B", "#FFD166", "#83D483", "#06D6A0", "#0CB0A9", "#118AB2", "#073B4C"]
                 for channel in range(0, 8):
                     plt.plot(np.array(self.get_bin_by_lvl(lvl).frames[frame])[:, channel],
                              color=colors[channel], label=f"channel {channel + 1}", alpha=0.8)
@@ -161,6 +161,3 @@ class rawData:
 
 rawData_instance = rawData(PATH)
 rawData_instance.read_directory()
-rawData_instance.plot_bin_by_lvl_frame_all_bins(-0.205, 1)
-rawData_instance.plot_bin_by_lvl_frame_all_bins(-0.205, 1, False)
-

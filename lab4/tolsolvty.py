@@ -1,6 +1,26 @@
+import numpy as np
+# np.float_ = np.float64
+# np.int_ = np.int64
+# from intvalpy import Interval, mid, subset, intersection, asinterval
+from tabulate import tabulate
 from numpy import (size, all, newaxis, ones, ceil, any, abs, maximum, min, argmin, max, zeros, eye, finfo, mod, roll,
                    sum, c_, arange, sort, argsort, remainder)
 from numpy.linalg import svd, lstsq, norm
+
+
+
+def print_table(matrix, headers):
+    print(tabulate(matrix, headers, tablefmt="simple_grid", stralign='center'))
+
+# print("\n")
+# print('Коэффициенты')
+# name_column = ['beta_1', 'beta_2', 'beta_3']
+# print('-' * (15 * 3 + 10))
+# print('| {:^15} | {:^15} | {:^15} |'.format(*name_column))
+# print('-'*(15*3 + 10))
+# print('| {:^15} | {:^15} | {:^15} |'.format(*coef))
+# print('-' * (15 * 3 + 10))
+# print("\n") - адекватный вывод таблицы в консоль
 
 
 #   Вычисление максимума распознающего функционала допускового множества
@@ -324,3 +344,96 @@ def tolsolvty(infA, supA, infb, supb, *varargin):
               ' рассматриваемой задачи о допусках')
 
     return tolmax, argmax, envs, ccode
+
+
+if __name__ == "__main__":
+    A_2 = [
+        [[0.65, 1.25], [0.70, 1.3]],
+        [[0.75, 1.35], [0.70, 1.3]]
+        ]
+    b_2 = [
+        [[2.75, 3.15]],
+        [[2.85, 3.25]]
+        ]
+
+    A_3 = [
+        [[0.65, 1.25], [0.70, 1.3]],
+        [[0.75, 1.35], [0.70, 1.3]],
+        [[0.8, 1.4], [0.70, 1.3]]
+    ]
+    b_3 = [
+        [[2.75, 3.15]],
+        [[2.85, 3.25]],
+        [[2.90, 3.3]]
+        ]
+
+    A_4 = [
+        [[0.65, 1.25], [0.70, 1.3]],
+        [[0.75, 1.35], [0.70, 1.3]],
+        [[0.8, 1.4], [0.70, 1.3]],
+        [[-0.3, 0.3], [0.70, 1.3]]
+    ]
+    b_4 = [
+        [[2.75, 3.15]],
+        [[2.85, 3.25]],
+        [[2.90, 3.3]],
+        [[1.8, 2.2]],
+        ]
+
+    # print("A_2 ", A_2, "\n", "b_2 ", b_2)
+    # print("A_3 ", A_3, "\n", "b_3 ", b_3)
+    # print("A_4 ", A_4, "\n", "b_4 ", b_4)
+
+
+    def inf(interval_matrix):
+        matrix = []
+        for row in interval_matrix:
+            matrix_row =[]
+            for cell in row:
+                matrix_row.append(cell[0])
+            matrix.append(matrix_row)
+        print("INF: ", np.array(matrix))
+        return np.array(matrix)
+
+
+    def sup(interval_matrix):
+        matrix = []
+        for row in interval_matrix:
+            matrix_row = []
+            for cell in row:
+                matrix_row.append(cell[1])
+            matrix.append(matrix_row)
+        print("SUP: ", np.array(matrix))
+        return np.array(matrix)
+
+
+    # print(inf(A))
+    # print(sup(A))
+    # print(inf(b))
+    # print(sup(b))
+
+    A = [
+        [[0, 1], [-5, -1]],
+        [[0, 2], [1, 2]]
+    ]
+    b = [
+        [[-1, 1]],
+        [[-2, 2]]
+    ]
+
+    print_table(A, headers="")
+    print_table(b, headers="")
+    # print_table(A_2, headers="")
+    # print_table(b_2, headers="")
+    # print_table(A_3, headers="")
+    # print_table(b_3, headers="")
+    # print_table(A_4, headers="")
+    # print_table(b_4, headers="")
+
+    tolmax, argmax, envs, ccode = tolsolvty(infA=inf(A), supA=sup(A), infb=inf(b), supb=sup(b))
+    # tolmax, argmax, envs, ccode = tolsolvty(infA=inf(A_4), supA=sup(A_4), infb=inf(b_4), supb=sup(b_4))
+    # tolmax, argmax, envs, ccode = tolsolvty(infA=inf(A_3), supA=sup(A_3), infb=inf(b_3), supb=sup(b_3))
+    # tolmax, argmax, envs, ccode = tolsolvty(infA=inf(A_2), supA=sup(A_2), infb=inf(b_2), supb=sup(b_2))
+    print(tolmax)
+    print(argmax)
+    print(envs)
